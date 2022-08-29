@@ -90,16 +90,16 @@ function expensesReducer(state, action) {
 function ExpensesContextProvider({ children }) {
     const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES)
 
-    function addExpense({expenseData}) {
-        dispatch({ type: 'ADD', payload: expenseData})
+    function addExpense(expenseData) {
+        dispatch({ type: 'ADD', payload: expenseData })
     }
 
     function deleteExpense(id) {
-        dispatch({type: 'DELETE', payload: id})
+        dispatch({ type: 'DELETE', payload: id })
     }
 
     function updateExpense(id, expenseData) {
-        dispatch({type: 'UPDATE', payload: {id: id, data: expenseData}})
+        dispatch({ type: 'UPDATE', payload: { id: id, data: expenseData } })
     }
 
     const value = { 
