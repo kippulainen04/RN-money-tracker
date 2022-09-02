@@ -11,6 +11,8 @@ const ManageExpenses = ({route, navigation}) => {
   const editExpenseId = route.params?.expenseId;
   const isEditing = !!editExpenseId; // into a Boolean
 
+  const selectedExpense = expenseCtx.expenses.find(expense => expense.id === editExpenseId)
+
   useLayoutEffect(() => {
     navigation.setOptions({
     title: isEditing ? 'Edit Expense' : 'Add Expense'
@@ -24,21 +26,12 @@ const ManageExpenses = ({route, navigation}) => {
   function cancelHandler() {
     navigation.goBack();
   }
-  function confirmHandler() {
+  function confirmHandler(expenseData) {
     if(isEditing) {
       expenseCtx.updateExpense(
-        editExpenseId,
-        {
-        description: 'A tomato',
-        amount: 1.90,
-        date: new Date('2022-08-25')
-      }) 
+        editExpenseId, expenseData) 
     } else {
-      expenseCtx.addExpense({
-        description: 'An egg',
-        amount: 0.90,
-        date: new Date('2022-08-23'),
-      })
+      expenseCtx.addExpense(expenseData)
     }
     navigation.goBack();
 
@@ -46,11 +39,12 @@ const ManageExpenses = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      <ExpenseForm />
-      <View style={styles.buttons}>
-        <Button mode='flat' style={styles.button} onPress={cancelHandler}>Cancel</Button>
-        <Button style={styles.button} onPress={confirmHandler}>{isEditing ? 'Update' : 'Add'}</Button>
-      </View>
+      <ExpenseForm 
+      onCancel={cancelHandler} 
+      submitButtonLabel={isEditing ? 'Update': 'Add'} 
+      onSubmit={confirmHandler}
+      defaultValues={selectedExpense}
+      />
       {isEditing && 
       <View style={styles.deleteContainer}>
         <IconButton 
@@ -73,15 +67,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: GlobalStyles.colors.primary800
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8
   },
   deleteContainer: {
     marginTop: 16,
