@@ -1,7 +1,6 @@
 import { useContext, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native'
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
-import Button from '../components/UI/Button';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import { ExpensesContext } from '../store/expenses-context';
@@ -11,7 +10,7 @@ const ManageExpenses = ({route, navigation}) => {
   const editExpenseId = route.params?.expenseId;
   const isEditing = !!editExpenseId; // into a Boolean
 
-  const selectedExpense = expenseCtx.expenses.find(expense => expense.id === editExpenseId)
+  const selectedExpense = expenseCtx.expenses.find((expense) => expense.id === editExpenseId)
 
   useLayoutEffect(() => {
     navigation.setOptions({
